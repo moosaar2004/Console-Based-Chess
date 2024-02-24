@@ -1,31 +1,42 @@
 package chess;
 
 //white = 0 black = 1
-public class Piece
+public abstract class Piece
 {
-    public int color, rank, preRank;
-    public char colFile, preFile;
+    private int white = 0, black = 1;
+    public boolean fMove = true;
 
-    public Piece(int color, char colFile, int rank)
+    public void setWhite(int white)
     {
-        this.color = color;
-        this.colFile = colFile;
-        this.rank = rank;
-        preFile = colFile;
-        preRank = rank;
+        this.white = white;
     }
-    public boolean canMove(char targetFile, int targetRank)
+
+    public boolean isWhite(int white)
     {
+        if(white == 0)
+        {
+            return true;
+        }
         return false;
     }
-
     //checks if desired move is on the board
     public boolean isWithinBounds(char targetFile, int targetRank)
     {
-        if(targetFile >= 'a' && targetFile <= 'h' && targetRank >= 1 && targetRank >= 8)
+        if(targetFile >= 'a' && targetFile <= 'h' && targetRank >= 1 && targetRank <= 8)
             return true;
         return false;
     }
+    public boolean isSamePlace(int targetFile, int targetRank, int preFile, int preRank)
+    {
+        if(targetFile == preFile && targetRank == preRank)
+            return true;
+        return false;
+    }
+
+    public abstract boolean canMove(char preFile, int preRank, char targetFile, int targetRank, boolean newEmpty);
+    public abstract void move();
+    public abstract String dPiece();  
 }
 
-//still in progress
+/**still in progress
+*/

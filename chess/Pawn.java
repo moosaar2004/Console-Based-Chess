@@ -4,12 +4,31 @@ package chess;
 public class Pawn extends Piece
 {
     public String pKind = "";
-    public Pawn(int color, char colFile, int rank)
+    public Pawn(int w)
     {
-        super(color, colFile, rank);
-        if(color == 0)
+        if(w == 0)
             pKind = "w";
         else
             pKind = "b";
+    }
+
+    //check if move is valid for king
+    //implement check for if new spot is empty
+    public boolean canMove(char preFile, int preRank, char targetFile, int targetRank, boolean newEmpty)
+    {
+        if(isWithinBounds(targetFile, targetRank) && isSamePlace(targetFile, targetRank, preFile, preRank) == false)
+        {
+            //to be written
+        }
+        return false;
+    }
+
+    public String dPiece()
+    {
+        return this.pKind;
+    }
+    public void move()
+    {
+        //to be implemented
     }
 }

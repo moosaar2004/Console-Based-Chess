@@ -4,12 +4,33 @@ package chess;
 public class Queen extends Piece
 {
     public String pKind = "";
-    public Queen(int color, char colFile, int rank)
+
+    public Queen(int w)
     {
-        super(color, colFile, rank);
-        if(color == 0)
+        if(w == 0)
             pKind = "w";
         else
             pKind = "b";
+    }
+
+    public boolean canMove(char preFile, int preRank, char targetFile, int targetRank, boolean newEmpty)
+    {
+        if(isWithinBounds(targetFile, targetRank) && isSamePlace(targetFile, targetRank, preFile, preRank) == false)
+        {
+            if(targetFile == preFile || targetRank == preRank)
+                return true;
+            if(Math.abs(targetFile - preFile) == Math.abs(targetRank - preRank))
+                return true;
+        }
+        return false;
+    }
+
+    public String dPiece()
+    {
+        return this.pKind;
+    }
+    public void move()
+    {
+        //to be implemented
     }
 }

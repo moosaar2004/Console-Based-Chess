@@ -4,29 +4,34 @@ package chess;
 public class King extends Piece
 {
     public String pKind = "";
-    public King(int color, char colFile, int rank)
+    public King(int w)
     {
-        super(color, colFile, rank);
-        if(color == 0)
+        if(w == 0)
             pKind = "w";
         else
             pKind = "b";
     }
 
     //check if move is valid for king
-    public boolean canMove(char targetFile, int targetRank)
+    //implement check for if new spot is empty
+    public boolean canMove(char preFile, int preRank, char targetFile, int targetRank, boolean newEmpty)
     {
-        if(isWithinBounds(targetFile, targetRank))
+        if(isWithinBounds(targetFile, targetRank) && isSamePlace(targetFile, targetRank, preFile, preRank) == false)
         {
-            //for moving one position up/down/right/left
             if(Math.abs(targetFile - preFile) + Math.abs(targetRank - preRank) == 1)
                 return true;
-            //for moving one position diagonally
             if(Math.abs(targetFile - preFile) * Math.abs(targetRank - preRank) == 1)
                 return true;
         }
         return false;
     }
-}
 
-//in progress
+    public String dPiece()
+    {
+        return this.pKind;
+    }
+    public void move()
+    {
+        //to be implemented
+    }
+}
