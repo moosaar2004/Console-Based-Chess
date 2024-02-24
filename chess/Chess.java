@@ -52,12 +52,22 @@ public class Chess {
 		/* FILL IN THIS METHOD */
 		ReturnPlay returnPlay = new ReturnPlay();
 
+		if(move.equals("reset"))
+		{
+			Chess.start();
+		}
+		
+
 		if(move.length() > 0 && move.length() < 6)
 		{
 			char prefile = move.charAt(0);
 			int preRank = move.charAt(1);
 			char targetfile = move.charAt(3);
 			int targetRank = move.charAt(4);
+		}
+		else if(move.length() == 6)
+		{
+
 		}
 		else
 		{
