@@ -50,46 +50,10 @@ public class Chess {
 	public static ReturnPlay play(String move) {
 
 		/* FILL IN THIS METHOD */
-		ReturnPlay returnPlay = new ReturnPlay();
-
-		if(move.equals("reset"))
-		{
-			Chess.start();
-		}
 		
-
-		if(move.length() > 0 && move.length() < 6)
-		{
-			char prefile = move.charAt(0);
-			int preRank = move.charAt(1);
-			char targetfile = move.charAt(3);
-			int targetRank = move.charAt(4);
-		}
-		else if(move.length() == 6)
-		{
-
-		}
-		else
-		{
-			returnPlay.message = ReturnPlay.Message.ILLEGAL_MOVE;
-		}
-		
-		//legal move resulting in check
-
-		//legal move resulting in checkmate
-
-		//draw
-
-		//resign
-
-
-
-
-
-
 		/* FOLLOWING LINE IS A PLACEHOLDER TO MAKE COMPILER HAPPY */
 		/* WHEN YOU FILL IN THIS METHOD, YOU NEED TO RETURN A ReturnPlay OBJECT */
-		return returnPlay;
+		return null;
 	}
 	
 	
