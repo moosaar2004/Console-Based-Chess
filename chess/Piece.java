@@ -5,7 +5,7 @@ package chess;
 public abstract class Piece
 {
     ReturnPiece.PieceType pieceType;
-    boolean pieceMoved = true;
+    boolean pieceNotMoved = true;
 
     public Piece(ReturnPiece.PieceType pieceType)
     {
@@ -39,7 +39,7 @@ public abstract class Piece
             }
             notiTwoJumpPawn(board, preRank, preFile, newRank, newFile);
             promoteIfAllowed(board, newRank, newFile, prom);
-            pieceMoved = false;
+            pieceNotMoved = false;
             return true;
         }
         else
@@ -99,6 +99,7 @@ public abstract class Piece
         boolean res = pieceType == ReturnPiece.PieceType.WK || pieceType == ReturnPiece.PieceType.WR || pieceType == ReturnPiece.PieceType.WQ || pieceType == ReturnPiece.PieceType.WP || pieceType == ReturnPiece.PieceType.WN || pieceType == ReturnPiece.PieceType.WB;
         return res;
     }
+
     public boolean checkIfNotBlockedByPieceFront(ChessBoard board, int preRank, int preFile, int newRank, int newFile)
     {
         int negPart;
@@ -173,68 +174,56 @@ public abstract class Piece
         return !(checks);
     }
 
-    public boolean checkIfCastingAllowed(ChessBoard board, int preRank, int preFile, int newRank, int newFile)
-    {
-        Piece leftRook;
-        Piece rightRook;
+    public boolean checkIfCastingAllowed(ChessBoard board, int preRank, int preFile, int newRank, int newFile) {
+        Piece lRook = board.checkIfWhiteTurn ? board.squares[0][0].piece : board.squares[0][7].piece;
+        Piece rRook = board.checkIfWhiteTurn ? board.squares[7][0].piece : board.squares[7][7].piece;
 
-        if (board.checkIfWhiteTurn)
-        {
-            leftRook = board.squares[0][0].piece;
-            rightRook = board.squares[7][0].piece;
-        }
-        else
-        {
-            leftRook = board.squares[0][7].piece;
-            rightRook = board.squares[7][7].piece;
-        }
+        boolean res = (this instanceof King) && pieceNotMoved &&
+        ((newRank == 6 &&
+                lRook instanceof Rook &&
+                lRook.pieceNotMoved &&
+                !board.checkIfKingInDanger(board.checkIfWhiteTurn) &&
+                analyzeMoveValidity(board, preRank, preFile, 5, newFile) &&
+                checkMoveDoesNotRCheck(board, preRank, preFile, 6, newFile) &&
+                board.squares[6][preFile].piece == null)
+                || (newRank == 2 &&
+                rRook instanceof Rook &&
+                rRook.pieceNotMoved &&
+                !board.checkIfKingInDanger(board.checkIfWhiteTurn) &&
+                analyzeMoveValidity(board, preRank, preFile, 3, newFile) &&
+                checkMoveDoesNotRCheck(board, preRank, preFile, 2, newFile) &&
+                board.squares[2][preFile].piece == null));
 
-        boolean a, b, c, d, e, f, g, h, k;
-
-        a = !board.checkIfKingInDanger(board.checkIfWhiteTurn);
-        b = analyzeMoveValidity(board, preRank, preFile, 5, newFile);
-        c = checkMoveDoesNotRCheck(board, preRank, preFile, 6, newFile);
-        d = (newRank == 6 && leftRook instanceof Rook && leftRook.pieceMoved && a && b && c && board.squares[6][preFile].piece == null);
-        e = !board.checkIfKingInDanger(board.checkIfWhiteTurn);
-        f = analyzeMoveValidity(board, preRank, preFile, 3, newFile);
-        g = checkMoveDoesNotRCheck(board, preRank, preFile, 2, newFile);
-
-        h = (this instanceof King) && pieceMoved;
-        k = (d || (newRank == 2 && rightRook instanceof Rook && rightRook.pieceMoved && e && f && g && board.squares[2][preFile].piece == null));
-
-        return h && k;
+        return res;
     }
 
-    public boolean doCastleIfAllowed(ChessBoard board, int preRank, int preFile, int newRank, int newFile)
-    {
-        if(checkIfCastingAllowed(board, preRank, preFile, newRank, newFile))
-        {
-            if(newRank == 2)
-            {
+    public boolean doCastleIfAllowed(ChessBoard board, int preRank, int preFile, int newRank, int newFile) {
+
+        if(checkIfCastingAllowed(board, preRank, preFile, newRank, newFile)) {
+            if(newRank == 2) {
                 board.squares[3][preFile].piece = board.squares[0][preFile].piece;
                 board.squares[0][preFile].piece = null;
 
                 board.squares[2][preFile].piece = board.squares[4][preFile].piece;
                 board.squares[4][preFile].piece = null;
 
-                board.squares[3][preFile].piece.pieceMoved = false;
-                board.squares[2][preFile].piece.pieceMoved = false;
-            }
-            else
-            {
+                board.squares[3][preFile].piece.pieceNotMoved = false;
+                board.squares[2][preFile].piece.pieceNotMoved = false;
+            } else {
                 board.squares[5][preFile].piece = board.squares[7][preFile].piece;
                 board.squares[7][preFile].piece = null;
 
                 board.squares[6][preFile].piece = board.squares[4][preFile].piece;
                 board.squares[4][preFile].piece = null;
 
-                board.squares[5][preFile].piece.pieceMoved = false;
-                board.squares[6][preFile].piece.pieceMoved = false;
+                board.squares[5][preFile].piece.pieceNotMoved = false;
+                board.squares[6][preFile].piece.pieceNotMoved = false;
             }
+
             return true;
         }
-        else
-            return false;
+
+        return false;
     }
 
     public boolean doEmpassantIfAllowed(ChessBoard board, int preRank, int preFile, int newRank, int newFile)

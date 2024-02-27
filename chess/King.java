@@ -18,6 +18,8 @@ public class King extends Piece
         boolean moveRegular = ((dX == 1 && (dY == 1 || dY == 0) || dY == 1 && dX == 0));
         boolean res = checkIfMoveValid(board, preRank, preFile, newRank, newFile) && moveRegular;
 
+        this.pieceNotMoved = false;
+
         return res;
     }
 }
