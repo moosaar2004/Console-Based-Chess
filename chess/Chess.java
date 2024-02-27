@@ -1,3 +1,5 @@
+//Authors: Ali Rehman; Musa Mahmood
+
 package chess;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ class ReturnPlay {
 
 public class Chess {
 	
+	public static ChessBoard board = new ChessBoard();
 	enum Player { white, black }
 	
 	/**
@@ -53,7 +56,7 @@ public class Chess {
 		
 		/* FOLLOWING LINE IS A PLACEHOLDER TO MAKE COMPILER HAPPY */
 		/* WHEN YOU FILL IN THIS METHOD, YOU NEED TO RETURN A ReturnPlay OBJECT */
-		return null;
+		return board.processGivenMove(move);
 	}
 	
 	
@@ -62,5 +65,7 @@ public class Chess {
 	 */
 	public static void start() {
 		/* FILL IN THIS METHOD */
+		board = new ChessBoard();
+		PlayChess.printBoard(board.receiveActivePieces());
 	}
 }
